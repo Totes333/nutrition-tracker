@@ -117,7 +117,7 @@ function manage(){
   if(S.pending){const f=S.pending;h+=`<div class="card"><b>Preview (per 100 g)</b><table>${NUT.map(([k,l,u])=>`<tr><td>${l}<td>${fmt(f.n[k])} ${u}`).join('')}</table>
     <input id="pn" value="${esc(f.name)}" style="width:100%"><div class="row"><input type="number" id="ps" placeholder="Serving g"><input type="number" id="pp" placeholder="Package g (opt.)"></div>
     <button data-a="savePending">Save</button> <button class="s" data-a="cancelPending">Cancel</button></div>`}
-  h+=`<h3>Ingredients</h3>`+db.ingredients.map(i=>S.editIng===i.id?editForm(i):`<div class="card"><b>${esc(i.name)}</b> <span class="mut">serving ${fmt(i.serving_g)} g${db.packages.filter(p=>p.ingredient_id===i.id).map(p=>' · pkg '+p.size_g+' g').join('')}</span><div class="row">
+  h+=`<h3>Ingredients</h3>`+db.ingredients.map(i=>S.editIng===i.id?editForm(i):`<div class="card"><b>${esc(i.name)}</b> <span class="mut">serving ${fmt(i.serving_g)} g</span>${db.packages.filter(p=>p.ingredient_id===i.id).map(p=>`<div class="row"><span class="mut" style="flex:1">Package ${p.size_g} g</span><button class="s" data-a="editPkg" data-id="${p.id}">Edit</button><button class="d" data-a="rmPkg" data-id="${p.id}">Remove</button></div>`).join('')}<div class="row">
     <button class="s" data-a="editIng" data-id="${i.id}">Edit</button><button class="s" data-a="addPkg" data-id="${i.id}">+ Package</button><button class="d" data-a="delIng" data-id="${i.id}">Delete</button></div></div>`).join('');
   const d=S.draft;
   h+=`<h3>Recipes</h3>`+(d?`<div class="card"><b>${d.id?'Edit':'New'} recipe</b><input id="rn" value="${esc(d.name)}" placeholder="Recipe name" style="width:100%">
@@ -149,6 +149,10 @@ const A={
     need(s>0,'Serving size must be > 0');need(nm&&!db.ingredients.some(x=>x.name===nm&&x!==i),'Name empty or already used');
     Object.assign(i,{name:nm,serving_g:s,n});save();S.editIng=null;flash('Saved')},
   addPkg:d=>{const g=parseFloat(prompt('Package size in grams'));if(g){addPkg(d.id,g);flash('Package saved')}},
+  editPkg:d=>{const p=db.packages.find(x=>x.id===d.id),g=parseFloat(prompt('New package size in grams',p.size_g));if(!g)return;
+    need(g>0,'Package size must be > 0');need(!db.packages.some(x=>x.ingredient_id===p.ingredient_id&&x.size_g===g&&x!==p),'That package size already exists');
+    p.size_g=g;save();flash('Package updated')},
+  rmPkg:d=>{if(confirm('Remove this package size?')){db.packages=db.packages.filter(x=>x.id!==d.id);save();flash('Package removed')}},
   delIng:d=>{if(confirm('Delete this ingredient?')){delIngredient(d.id);flash('Deleted')}},
   newRecipe:()=>{S.draft={id:null,name:'',items:[]}},cancelDraft:()=>{S.draft=null},
   editRec:d=>{const r=rec(d.id);S.draft={id:r.id,name:r.name,items:r.items.map(x=>({...x}))}},
