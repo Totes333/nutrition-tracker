@@ -1,0 +1,15 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Nutrition Tracker</title><link rel="manifest" href="manifest.json"><meta name="theme-color" content="#2e7d32">
+<style>
+:root{--bg:#fff;--fg:#1b1b1b;--mut:#666;--line:#ddd;--acc:#2e7d32;--warn:#c62828}
+@media(prefers-color-scheme:dark){:root{--bg:#121212;--fg:#eee;--mut:#aaa;--line:#333;--acc:#66bb6a;--warn:#ef5350}}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--fg);font:16px system-ui,sans-serif;padding:0 12px 80px}
+h3{margin:20px 0 6px}table{width:100%;border-collapse:collapse}td,th{padding:6px 4px;border-bottom:1px solid var(--line);text-align:left}
+input,select,button{font:inherit;padding:8px;margin:3px 0;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);max-width:100%}
+button{background:var(--acc);color:#fff;border:0}button.s{background:none;color:var(--acc);border:1px solid var(--acc)}button.d{background:var(--warn)}
+input[type=number]{width:90px}.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.card{border:1px solid var(--line);border-radius:8px;padding:8px;margin:8px 0}
+.low{color:var(--warn);font-weight:bold}.mut{color:var(--mut);font-size:14px}.msg{padding:8px;border-radius:6px;margin:8px 0;background:var(--acc);color:#fff}.msg.err{background:var(--warn)}
+nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:var(--bg);border-top:1px solid var(--line);padding-bottom:env(safe-area-inset-bottom)}
+nav button{flex:1;background:none;color:var(--mut);border-radius:0;padding:14px}nav button.on{color:var(--acc);font-weight:bold}
+</style></head><body><div id="app"></div><nav id="nav"></nav><script src="app.js"></script></body></html>
